@@ -391,7 +391,98 @@ Explainable AI
 Scientific machine learning
 
 
+# 🚀 Advanced Platform Features
 
+## 🔐 User Authentication
+- Secure login system using `streamlit-authenticator`
+- Session-based authentication
+- Protected AI prediction dashboard
+- Logout functionality included
+
+---
+
+## 🗄️ SQLite Prediction Logging
+- Automatic prediction logging system
+- Stores:
+  - Username
+  - SMILES input
+  - Model used
+  - Predicted melting point
+  - Prediction status
+  - Timestamp
+
+---
+
+## 📊 Prediction History Dashboard
+- Dedicated prediction history tab
+- Real-time history tracking
+- Interactive prediction monitoring
+- Download history as CSV
+
+---
+
+## 🗑️ Delete Selected Predictions
+- Delete individual prediction records
+- Row-level prediction management
+- Interactive deletion system
+
+---
+
+## 🧹 Clear Entire Prediction History
+- Remove all prediction logs instantly
+- Database reset functionality
+- One-click cleanup system
+
+---
+
+# 🐳 Docker Deployment
+- Fully containerized AI platform
+- Portable deployment architecture
+- Production-ready Docker setup
+- Streamlit application deployed inside Docker container
+
+### Docker Commands
+
+```bash
+docker build -t hybrid-gnn-ai-cheminformatics-platform .
+docker run -p 8501:8501 hybrid-gnn-ai-cheminformatics-platform
+
+
+
+
+☁️ Streamlit Cloud Deployment
+Public cloud-hosted AI application
+Accessible from anywhere
+Live online prediction platform
+Integrated GitHub deployment pipeline
+
+
+🏗️ Production Architecture
+User
+↓
+Authentication Layer
+↓
+Streamlit Frontend
+↓
+Hybrid AI Prediction Engine
+↓
+RDKit + LightGBM + Hybrid GAT Models
+↓
+SQLite Prediction Logging Database
+
+
+💡 Enterprise-Level Features
+
+✅ AI Explainability (SHAP)
+✅ Molecular Visualization
+✅ Multi-Model Prediction
+✅ Batch CSV Prediction
+✅ Full Dataset Prediction
+✅ User Authentication
+✅ Database Logging
+✅ Docker Deployment
+✅ Cloud Deployment
+✅ Prediction History Management
 
 
 👨‍💻 Author
