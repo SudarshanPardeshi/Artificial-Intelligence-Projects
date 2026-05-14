@@ -1,0 +1,11 @@
+credentials:
+  usernames:
+    sudarshan:
+      email: sudarshanpardeshi71@outlook.com
+      name: Sudarshan Pardeshi
+      password: "$2b$12$ZLT52XYssFi1reAfRgJlK.32pH5F1.PlquoR9cT2Yc./Iu21UuMsO"
+
+cookie:
+  expiry_days: 30
+  key: melting_point_ai_auth_key
+  name: melting_point_ai_cookie

@@ -12,3 +12,5 @@ lightgbm
 fastapi
 uvicorn
 pillow
+streamlit-authenticator
+pyyaml
