@@ -1,0 +1,3 @@
+auth_config.yaml
+prediction_logs.db
+__pycache__/
