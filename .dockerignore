@@ -1,0 +1,4 @@
+__pycache__/
+*.ipynb
+prediction_logs.db
+.git/

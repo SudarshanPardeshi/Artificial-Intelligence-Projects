@@ -1,14 +1,10 @@
-FROM python:3.11
+FROM continuumio/miniconda3
 
 WORKDIR /app
 
-COPY . .
+COPY . /app
 
-RUN apt-get update && apt-get install -y \
-    libxrender1 \
-    libxext6 \
-    libsm6 \
-    libglib2.0-0
+RUN conda install -c conda-forge rdkit -y
 
 RUN pip install --upgrade pip
 
