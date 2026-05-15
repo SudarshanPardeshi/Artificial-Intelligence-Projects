@@ -369,59 +369,102 @@ def find_top_similar_molecules(query_smiles, molecule_df, top_n=10):
     ).head(top_n)
 
 
+
 def create_3d_molblock(smiles):
 
     mol = Chem.MolFromSmiles(smiles)
 
     if mol is None:
-        return None
+        return None, "Invalid SMILES"
 
-    mol = Chem.AddHs(mol)
+    mol_h = Chem.AddHs(mol)
 
+    # Attempt 1: true 3D conformer using ETKDGv3
     try:
         params = AllChem.ETKDGv3()
         params.randomSeed = 42
         params.useRandomCoords = True
-        params.maxAttempts = 1000
+        params.maxAttempts = 2000
 
         result = AllChem.EmbedMolecule(
-            mol,
+            mol_h,
             params
         )
 
-        if result != 0:
-            result = AllChem.EmbedMolecule(
-                mol,
-                randomSeed=42,
-                useRandomCoords=True,
-                maxAttempts=1000
-            )
+        if result == 0:
 
-        if result != 0:
-            return None
+            try:
+                if AllChem.MMFFHasAllMoleculeParams(mol_h):
+                    AllChem.MMFFOptimizeMolecule(
+                        mol_h,
+                        maxIters=1000
+                    )
+                else:
+                    AllChem.UFFOptimizeMolecule(
+                        mol_h,
+                        maxIters=1000
+                    )
+            except Exception:
+                pass
 
-        try:
-            if AllChem.MMFFHasAllMoleculeParams(mol):
-                AllChem.MMFFOptimizeMolecule(
-                    mol,
-                    maxIters=500
-                )
-            else:
-                AllChem.UFFOptimizeMolecule(
-                    mol,
-                    maxIters=500
-                )
-
-        except Exception:
-            pass
-
-        return Chem.MolToMolBlock(mol)
+            return Chem.MolToMolBlock(mol_h), "True 3D conformer"
 
     except Exception:
-        return None
+        pass
+
+    # Attempt 2: multiple conformers
+    try:
+        conf_ids = AllChem.EmbedMultipleConfs(
+            mol_h,
+            numConfs=10,
+            randomSeed=42,
+            useRandomCoords=True,
+            maxAttempts=2000
+        )
+
+        if len(conf_ids) > 0:
+
+            try:
+                if AllChem.MMFFHasAllMoleculeParams(mol_h):
+                    AllChem.MMFFOptimizeMoleculeConfs(
+                        mol_h,
+                        maxIters=1000
+                    )
+                else:
+                    AllChem.UFFOptimizeMoleculeConfs(
+                        mol_h,
+                        maxIters=1000
+                    )
+            except Exception:
+                pass
+
+            return (
+                Chem.MolToMolBlock(
+                    mol_h,
+                    confId=int(conf_ids[0])
+                ),
+                "True 3D conformer"
+            )
+
+    except Exception:
+        pass
+
+    # Attempt 3: interactive 2D-coordinate fallback
+    try:
+        mol_2d = Chem.MolFromSmiles(smiles)
+
+        if mol_2d is None:
+            return None, "Invalid SMILES"
+
+        AllChem.Compute2DCoords(mol_2d)
+
+        return Chem.MolToMolBlock(mol_2d), "2D fallback viewer"
+
+    except Exception:
+        return None, "3D generation failed"
 
 
-def show_3d_molecule(smiles, width=430, height=420, viewer_key=None):
+def show_3d_molecule(smiles, width=650, height=480, viewer_key=None):
 
     if not PY3DMOL_AVAILABLE:
         st.warning(
@@ -429,12 +472,17 @@ def show_3d_molecule(smiles, width=430, height=420, viewer_key=None):
         )
         return
 
-    mol_block = create_3d_molblock(smiles)
+    molblock_result = create_3d_molblock(smiles)
+
+    if isinstance(molblock_result, tuple):
+        mol_block, generation_mode = molblock_result
+    else:
+        mol_block = molblock_result
+        generation_mode = "Unknown"
 
     if mol_block is None:
         st.warning(
-            "3D structure could not be generated for this molecule. "
-            "This can happen for some complex, very large, or invalid SMILES."
+            "Molecular viewer could not be generated for this molecule."
         )
         return
 
@@ -470,8 +518,18 @@ def show_3d_molecule(smiles, width=430, height=420, viewer_key=None):
             scrolling=False
         )
 
+        if generation_mode == "True 3D conformer":
+            st.success("True 3D conformer generated successfully.")
+        elif generation_mode == "2D fallback viewer":
+            st.warning(
+                "True 3D conformer could not be embedded, so an interactive fallback viewer is shown."
+            )
+        else:
+            st.info(f"Viewer mode: {generation_mode}")
+
     except Exception as e:
         st.error(f"3D viewer rendering failed: {e}")
+
 
 
 def calculate_prediction_uncertainty(rdkit_prediction, hybrid_prediction):
@@ -3272,12 +3330,12 @@ if st.session_state["authentication_status"] is True:
 
                     with st.expander(
                         "Open Interactive 3D Molecule Viewer",
-                        expanded=False
+                        expanded=True
                     ):
 
                         st.info(
-                            "If the viewer is blank, wait a few seconds or refresh the app. "
-                            "Some molecules may fail 3D embedding depending on structure complexity."
+                            "The interactive 3D molecular viewer is generated below. "
+                            "If true 3D embedding fails, a fallback interactive viewer will be shown."
                         )
 
                         show_3d_molecule(
@@ -3286,6 +3344,8 @@ if st.session_state["authentication_status"] is True:
                             height=480,
                             viewer_key=f"explorer_3d_{safe_name}"
                         )
+
+
 
                     explorer_properties_df = pd.DataFrame({
                         "Property": [

@@ -24,10 +24,3 @@ networkx
 tqdm
 seaborn
 shap
-plotly
-networkx
-umap-learn
-reportlab
-rdkit
-streamlit
-scikit-learn
