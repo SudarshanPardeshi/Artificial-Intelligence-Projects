@@ -103,6 +103,253 @@ if "authentication_status" not in st.session_state:
 # HELPER FUNCTIONS
 # ==================================================
 
+def apply_visible_ui_upgrade():
+
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 42%, #eef2ff 100%);
+        }
+
+        .block-container {
+            padding-top: 1.2rem;
+            max-width: 1500px;
+        }
+
+        .main-hero {
+            background: linear-gradient(135deg, #2e1065 0%, #4f46e5 55%, #2563eb 100%);
+            padding: 28px 32px;
+            border-radius: 22px;
+            color: white;
+            margin-bottom: 22px;
+            box-shadow: 0 14px 40px rgba(124, 58, 237, 0.18);
+        }
+
+        .main-hero h1 {
+            color: white !important;
+            font-size: 2.35rem;
+            margin-bottom: 6px;
+            font-weight: 850;
+            letter-spacing: -0.03em;
+        }
+
+        .main-hero p {
+            font-size: 1.05rem;
+            opacity: 0.96;
+            margin-bottom: 0;
+        }
+
+        .status-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            border-radius: 999px;
+            padding: 6px 12px;
+            margin-right: 8px;
+            margin-top: 14px;
+            font-size: 0.84rem;
+            font-weight: 650;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border: 1px solid #c4b5fd;
+            border-radius: 18px;
+            padding: 18px 18px;
+            min-height: 118px;
+            box-shadow: 0 10px 28px rgba(79, 70, 229, 0.12);
+            margin-bottom: 12px;
+        }
+
+        .module-card-title {
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 0.98rem;
+            margin-bottom: 6px;
+        }
+
+        .module-card-value {
+            color: #4f46e5;
+            font-weight: 900;
+            font-size: 1.55rem;
+            line-height: 1.1;
+        }
+
+        .module-card-caption {
+            color: #64748b;
+            font-size: 0.80rem;
+            margin-top: 8px;
+        }
+
+        .section-callout {
+            background: #ede9fe;
+            border-left: 5px solid #7c3aed;
+            padding: 13px 16px;
+            border-radius: 12px;
+            color: #0f172a;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        button[data-baseweb="tab"] {
+            font-weight: 800 !important;
+            border-radius: 14px 14px 0 0 !important; border: 1px solid #c4b5fd !important;
+            padding: 10px 14px !important;
+        }
+
+        div[data-testid="stMetric"] {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        }
+
+        div[data-testid="stDataFrame"] {
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        }
+
+        div[data-testid="stExpander"] {
+            border-radius: 16px;
+            border: 1px solid #c4b5fd;
+            background: white;
+        }
+
+        .footer-upgraded {
+            background: linear-gradient(135deg, #2e1065 0%, #312e81 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 28px;
+            font-size: 0.88rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+def render_visible_platform_header():
+
+    try:
+        _df = load_molecule_dataset()
+        molecule_count = len(_df)
+    except Exception:
+        molecule_count = "N/A"
+
+    st.markdown(
+        f"""
+        <div class="main-hero">
+            <h1>🧪 Hybrid GNN AI Cheminformatics Platform</h1>
+            <p>
+                Molecular melting point prediction, 3D visualization, OOD reliability,
+                chemical-space analytics, scaffold exploration, and drug-likeness screening.
+            </p>
+            <span class="status-pill">📦 Dataset: {molecule_count} molecules</span>
+            <span class="status-pill">🧠 RDKit + GNN + Ensemble</span>
+            <span class="status-pill">🧬 PCA · t-SNE · UMAP</span>
+            <span class="status-pill">🚀 Deployment Ready</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        st.markdown(
+            f"""
+            <div class="module-card">
+                <div class="module-card-title">Dataset Coverage</div>
+                <div class="module-card-value">{molecule_count}</div>
+                <div class="module-card-caption">Full molecule catalog with pagination</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c2:
+        st.markdown(
+            """
+            <div class="module-card">
+                <div class="module-card-title">Prediction Engine</div>
+                <div class="module-card-value">Hybrid AI</div>
+                <div class="module-card-caption">RDKit LightGBM + GAT + Ensemble</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c3:
+        st.markdown(
+            """
+            <div class="module-card">
+                <div class="module-card-title">Reliability Layer</div>
+                <div class="module-card-value">OOD</div>
+                <div class="module-card-caption">Tanimoto, Mahalanobis, conformal checks</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with c4:
+        st.markdown(
+            """
+            <div class="module-card">
+                <div class="module-card-title">Discovery Toolkit</div>
+                <div class="module-card-value">Full Suite</div>
+                <div class="module-card-caption">Scaffold, UMAP, drug-likeness, 3D</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+    st.markdown(
+        """
+        <div style="
+            background: linear-gradient(90deg, #ede9fe 0%, #eef2ff 100%);
+            border: 1px solid #c4b5fd;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            color: #312e81;
+            font-weight: 650;
+            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.08);
+        ">
+        🧬 Research-Grade Molecular AI Platform · GNN + RDKit + Chemical Space Analytics + Drug Discovery Toolkit
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        """
+        <div class="section-callout">
+            Select a module below. Heavy cloud operations should be tested with smaller row limits first.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+def render_visible_footer():
+
+    st.markdown(
+        """
+        <div class="footer-upgraded">
+            Hybrid GNN AI Cheminformatics Platform · Streamlit · RDKit · PyTorch Geometric · Plotly · UMAP · LightGBM
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+
 def load_molecule_dataset():
 
     possible_files = [
@@ -363,6 +610,66 @@ def resolve_molecule_name_to_smiles(
         pass
 
     return None, molecule_name_clean, "Not found"
+
+
+
+def display_paginated_dataframe(
+    df,
+    table_key,
+    rows_per_page=100
+):
+    if df is None or df.empty:
+        st.warning("No data available to display.")
+        return df
+
+    total_rows = len(df)
+
+    st.markdown("#### Dataset Pagination")
+
+    col_page_size, col_page_number = st.columns([1, 1])
+
+    with col_page_size:
+
+        selected_rows_per_page = st.selectbox(
+            "Rows per page",
+            options=[25, 50, 100, 200, 500],
+            index=2,
+            key=f"{table_key}_rows_per_page"
+        )
+
+    total_pages = max(
+        1,
+        math.ceil(total_rows / selected_rows_per_page)
+    )
+
+    with col_page_number:
+
+        page_number = st.number_input(
+            "Page number",
+            min_value=1,
+            max_value=total_pages,
+            value=1,
+            step=1,
+            key=f"{table_key}_page_number"
+        )
+
+    start_idx = (page_number - 1) * selected_rows_per_page
+    end_idx = start_idx + selected_rows_per_page
+
+    paged_df = df.iloc[start_idx:end_idx].copy()
+
+    st.dataframe(
+        paged_df,
+        width="stretch"
+    )
+
+    st.caption(
+        f"Showing rows {start_idx + 1} to "
+        f"{min(end_idx, total_rows)} out of {total_rows} "
+        f"(Page {page_number} of {total_pages})"
+    )
+
+    return paged_df
 
 
 def make_safe_filename(name):
@@ -2499,11 +2806,12 @@ if st.session_state["authentication_status"] is True:
     authenticator.logout("Logout", "sidebar")
     st.sidebar.success(f"Welcome {st.session_state.get('name', 'User')}")
 
-    st.title("🧪 Hybrid GNN AI Cheminformatics Platform")
+
+    apply_visible_ui_upgrade()
 
 
-
-    # Full molecule dataset check
+    render_visible_platform_header()
+# Full molecule dataset check
 
 
     try:
@@ -2569,19 +2877,19 @@ if st.session_state["authentication_status"] is True:
     )
 
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13 = st.tabs([
-        "Single Molecule Prediction",
-        "Molecule Explorer",
-        "Batch CSV Prediction",
-        "Use Saved Full Dataset",
-        "Prediction History",
-        "Dashboard Summary",
-        "Scaffold Analysis",
-        "OOD Detection",
-        "Chemical Space PCA",
-        "Chemical Space t-SNE",
-        "Chemical Space UMAP",
-        "Interactive Plotly UMAP + AI Overlay + Drug-Likeness Analysis",
-        "Drug-Likeness Analysis"
+        "🔮 Single Prediction",
+        "🧬 Molecule Explorer",
+        "📄 Batch CSV",
+        "📦 Saved Dataset",
+        "🕘 History",
+        "📊 Dashboard",
+        "🧱 Scaffold",
+        "🛡️ OOD",
+        "📉 PCA",
+        "🌀 t-SNE",
+        "🌌 UMAP",
+        "⚡ Plotly UMAP + AI",
+        "💊 Drug-Likeness"
     ])
 
     with tab1:
@@ -3619,37 +3927,127 @@ if st.session_state["authentication_status"] is True:
 
         st.subheader("Predict Saved Full Dataset")
 
+        st.write(
+            "Preview and run predictions on the saved full molecule descriptor dataset. "
+            "Pagination is enabled so the full 3328-molecule dataset can be browsed page by page."
+        )
+
         try:
+
             full_df = pd.read_csv("all_smiles_clean.csv")
-            st.dataframe(full_df.head())
 
-            if st.button("Run Prediction on Full Dataset"):
+            st.success(
+                f"Saved full descriptor dataset loaded: {len(full_df)} rows"
+            )
 
-                results_df = predict_batch(
-                    full_df["SMILES"]
-                    .dropna()
-                    .astype(str)
-                    .tolist()
+            st.info(
+                "Use the pagination controls below to browse the full dataset. "
+                "For Streamlit Cloud, start predictions with a smaller row limit first."
+            )
+
+            display_paginated_dataframe(
+                df=full_df,
+                table_key="saved_full_dataset_preview",
+                rows_per_page=100
+            )
+
+            st.markdown("---")
+
+            st.subheader("Prediction Row Limit")
+
+            max_prediction_rows = st.slider(
+                "Number of rows to predict",
+                min_value=10,
+                max_value=len(full_df),
+                value=min(100, len(full_df)),
+                step=10,
+                key="saved_full_dataset_prediction_limit"
+            )
+
+            st.warning(
+                "Cloud safety note: avoid running all 3000+ rows on Streamlit Cloud first. "
+                "Test 100, then 500, then larger batches if stable."
+            )
+
+            if st.button(
+                "Run Prediction on Selected Number of Rows",
+                key="run_saved_full_dataset_prediction"
+            ):
+
+                prediction_df = full_df.head(
+                    max_prediction_rows
+                ).copy()
+
+                with st.spinner(
+                    f"Running prediction on {len(prediction_df)} rows..."
+                ):
+
+                    prediction_results = []
+
+                    for _, row in prediction_df.iterrows():
+
+                        try:
+
+                            smiles = row["SMILES"]
+
+                            rdkit_prediction = predict_melting_point(
+                                smiles
+                            )
+
+                            hybrid_prediction = predict_hybrid_gat(
+                                smiles
+                            )
+
+                            ensemble_prediction = (
+                                0.4 * rdkit_prediction
+                                +
+                                0.6 * hybrid_prediction
+                            )
+
+                            prediction_results.append({
+                                "SMILES": smiles,
+                                "RDKit_Prediction_K": round(rdkit_prediction, 2),
+                                "Hybrid_GAT_Prediction_K": round(hybrid_prediction, 2),
+                                "Ensemble_Prediction_K": round(ensemble_prediction, 2),
+                                "Ensemble_Prediction_C": round(ensemble_prediction - 273.15, 2)
+                            })
+
+                        except Exception as row_error:
+
+                            prediction_results.append({
+                                "SMILES": row.get("SMILES", "Unknown"),
+                                "Error": str(row_error)
+                            })
+
+                    results_df = pd.DataFrame(
+                        prediction_results
+                    )
+
+                st.success(
+                    f"Prediction completed for {len(results_df)} rows."
                 )
 
-                results_df["Predicted_Melting_Point_C"] = (
-                    results_df["Predicted_Melting_Point_K"] - 273.15
-                ).round(2)
+                display_paginated_dataframe(
+                    df=results_df,
+                    table_key="saved_full_dataset_prediction_results",
+                    rows_per_page=100
+                )
 
-                st.success("Prediction completed")
-                st.dataframe(results_df)
-
-                csv = results_df.to_csv(index=False).encode("utf-8")
+                csv = results_df.to_csv(
+                    index=False
+                ).encode("utf-8")
 
                 st.download_button(
-                    "Download Full Dataset Predictions",
+                    label="Download Saved Dataset Predictions CSV",
                     data=csv,
-                    file_name="all_smiles_predictions.csv",
+                    file_name="saved_full_dataset_predictions.csv",
                     mime="text/csv"
                 )
 
-        except FileNotFoundError:
-            st.warning("all_smiles_clean.csv not found")
+        except Exception as e:
+
+            st.error(f"Saved full dataset prediction failed: {e}")
+
 
     with tab5:
 
@@ -4785,7 +5183,22 @@ if st.session_state["authentication_status"] is True:
             else:
 
                 st.info(
-                    "Generate full dataset Murcko scaffold statistics and scaffold frequency analysis."
+                    "Generate Murcko scaffold statistics and scaffold frequency analysis. "
+                    "Use row limits on Streamlit Cloud for safety, then increase gradually."
+                )
+
+                scaffold_process_limit = st.slider(
+                    "Number of molecules to process for scaffold summary",
+                    min_value=50,
+                    max_value=len(molecule_df),
+                    value=min(500, len(molecule_df)),
+                    step=50,
+                    key="full_scaffold_process_limit"
+                )
+
+                st.warning(
+                    "Cloud safety note: start with 500 molecules. If stable, increase to 1000, "
+                    "2000, and then the full dataset."
                 )
 
                 if st.button(
@@ -4793,10 +5206,16 @@ if st.session_state["authentication_status"] is True:
                     key="generate_full_scaffold_analysis"
                 ):
 
-                    with st.spinner("Generating Murcko scaffolds for full dataset..."):
+                    with st.spinner(
+                        f"Generating Murcko scaffolds for {scaffold_process_limit} molecules..."
+                    ):
+
+                        scaffold_input_df = molecule_df.head(
+                            scaffold_process_limit
+                        ).copy()
 
                         scaffold_df = generate_scaffold_dataframe(
-                            molecule_df
+                            scaffold_input_df
                         )
 
                     if scaffold_df.empty:
@@ -4805,7 +5224,9 @@ if st.session_state["authentication_status"] is True:
 
                     else:
 
-                        st.success("Full dataset scaffold analysis completed.")
+                        st.success(
+                            f"Scaffold analysis completed for {len(scaffold_df)} molecules."
+                        )
 
                         total_molecules = len(scaffold_df)
 
@@ -4819,7 +5240,7 @@ if st.session_state["authentication_status"] is True:
                             ]
                         )
 
-                        col_s1, col_s2, col_s3 = st.columns(3)
+                        col_s1, col_s2, col_s3, col_s4 = st.columns(4)
 
                         with col_s1:
                             st.metric(
@@ -4839,6 +5260,24 @@ if st.session_state["authentication_status"] is True:
                                 no_scaffold_count
                             )
 
+                        with col_s4:
+                            st.metric(
+                                "Processed Limit",
+                                scaffold_process_limit
+                            )
+
+                        st.markdown("---")
+
+                        st.subheader("Full Scaffold Analysis Table")
+
+                        display_paginated_dataframe(
+                            df=scaffold_df,
+                            table_key="full_scaffold_analysis_table",
+                            rows_per_page=100
+                        )
+
+                        st.markdown("---")
+
                         st.subheader("Scaffold Frequency Table")
 
                         scaffold_freq_df = (
@@ -4856,9 +5295,10 @@ if st.session_state["authentication_status"] is True:
                             )
                         )
 
-                        st.dataframe(
-                            scaffold_freq_df,
-                            width="stretch"
+                        display_paginated_dataframe(
+                            df=scaffold_freq_df,
+                            table_key="full_scaffold_frequency_table",
+                            rows_per_page=100
                         )
 
                         st.subheader("Top Scaffold Frequency Plot")
@@ -4965,9 +5405,10 @@ if st.session_state["authentication_status"] is True:
                                     ]
                                 ]
 
-                                st.dataframe(
-                                    selected_scaffold_molecules,
-                                    width="stretch"
+                                display_paginated_dataframe(
+                                    df=selected_scaffold_molecules,
+                                    table_key="selected_scaffold_molecules_table",
+                                    rows_per_page=100
                                 )
 
                         scaffold_csv = scaffold_df.to_csv(
@@ -4975,9 +5416,9 @@ if st.session_state["authentication_status"] is True:
                         ).encode("utf-8")
 
                         st.download_button(
-                            label="Download Full Scaffold Analysis CSV",
+                            label="Download Processed Scaffold Analysis CSV",
                             data=scaffold_csv,
-                            file_name="murcko_scaffold_analysis.csv",
+                            file_name="murcko_scaffold_analysis_processed.csv",
                             mime="text/csv"
                         )
 
@@ -4991,6 +5432,7 @@ if st.session_state["authentication_status"] is True:
                             file_name="murcko_scaffold_frequency.csv",
                             mime="text/csv"
                         )
+
 
         except Exception as e:
 
@@ -6449,7 +6891,7 @@ if st.session_state["authentication_status"] is True:
             sample_size_pca = st.slider(
                 "Number of molecules to visualize",
                 min_value=100,
-                max_value=min(3000, len(pca_full_df)),
+                max_value=len(pca_full_df),
                 value=min(1000, len(pca_full_df)),
                 step=100,
                 key="interactive_pca_sample_size"
@@ -6462,6 +6904,11 @@ if st.session_state["authentication_status"] is True:
                 value=42,
                 step=1,
                 key="interactive_pca_random_seed"
+            )
+
+            st.info(
+                "Full dataset PCA note: you can move the slider up to all available molecules. "
+                "On Streamlit Cloud, start with 1000 and increase gradually if stable."
             )
 
             color_option_pca = st.selectbox(
@@ -6884,7 +7331,7 @@ if st.session_state["authentication_status"] is True:
             sample_size_tsne = st.slider(
                 "Number of molecules to visualize",
                 min_value=100,
-                max_value=min(3000, len(tsne_full_df)),
+                max_value=len(tsne_full_df),
                 value=min(1000, len(tsne_full_df)),
                 step=100,
                 key="interactive_tsne_sample_size"
@@ -6930,7 +7377,8 @@ if st.session_state["authentication_status"] is True:
             )
 
             st.info(
-                "Recommended: 500–1000 molecules for faster t-SNE performance. "
+                "Full dataset t-SNE note: the slider can now use the full dataset. "
+                "For Streamlit Cloud, start with 500–1000 molecules and increase gradually. "
                 "t-SNE emphasizes local neighborhoods rather than global distances."
             )
 
@@ -7359,7 +7807,7 @@ if st.session_state["authentication_status"] is True:
                 sample_size_umap = st.slider(
                     "Number of molecules to visualize",
                     min_value=100,
-                    max_value=min(3000, len(umap_full_df)),
+                    max_value=len(umap_full_df),
                     value=min(1500, len(umap_full_df)),
                     step=100,
                     key="interactive_umap_sample_size"
@@ -7405,8 +7853,9 @@ if st.session_state["authentication_status"] is True:
                 )
 
                 st.info(
-                    "Recommended: 1000–2000 molecules. UMAP usually gives the clearest "
-                    "chemical-space cluster visualization."
+                    "Full dataset UMAP note: the slider can now use the full dataset. "
+                    "For Streamlit Cloud, start with 1000–2000 molecules and increase gradually. "
+                    "UMAP usually gives the clearest chemical-space cluster visualization."
                 )
 
                 if st.button(
@@ -7852,7 +8301,7 @@ if st.session_state["authentication_status"] is True:
                 sample_size_plotly_umap = st.slider(
                     "Number of molecules for interactive Plotly UMAP",
                     min_value=100,
-                    max_value=min(3000, len(plotly_umap_full_df)),
+                    max_value=len(plotly_umap_full_df),
                     value=min(1500, len(plotly_umap_full_df)),
                     step=100,
                     key="plotly_umap_updated_sample_size"
@@ -7914,8 +8363,9 @@ if st.session_state["authentication_status"] is True:
                     )
 
                 st.info(
-                    "Recommended: 1000–2000 molecules for standard visualization, "
-                    "100–500 molecules when using AI overlay coloring."
+                    "Full dataset Interactive Plotly UMAP note: standard visualization can use the full dataset. "
+                    "For Streamlit Cloud, start with 1000–2000 molecules. "
+                    "For AI overlay coloring, use 100–500 molecules first because predictions/OOD are calculated for every plotted molecule."
                 )
 
                 if st.button(
@@ -8917,6 +9367,11 @@ if st.session_state["authentication_status"] is True:
 
                 st.subheader("Batch Drug-Likeness CSV Analysis")
 
+                st.info(
+                    "Full dataset drug-likeness note: batch analysis can now use the full dataset. "
+                    "For Streamlit Cloud, start with 500 molecules and increase gradually."
+                )
+
                 st.write(
                     "Upload a CSV containing at least a `SMILES` column. Optional columns: `Molecule_Name` or `Name`."
                 )
@@ -8976,7 +9431,7 @@ if st.session_state["authentication_status"] is True:
                         max_batch_rows = st.slider(
                             "Maximum molecules to analyze",
                             min_value=10,
-                            max_value=min(3000, len(batch_input_df)),
+                            max_value=len(batch_input_df),
                             value=min(500, len(batch_input_df)),
                             step=50,
                             key="batch_drug_likeness_max_rows"
