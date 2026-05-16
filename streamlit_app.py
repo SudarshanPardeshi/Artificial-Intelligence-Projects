@@ -299,6 +299,72 @@ def display_paginated_molecule_table(
     return paged_df
 
 
+
+def resolve_molecule_name_to_smiles(
+    molecule_name,
+    molecule_df=None
+):
+    molecule_name_clean = str(molecule_name).strip()
+
+    if molecule_name_clean == "":
+        return None, None, "Empty molecule name"
+
+    # 1. Search local full molecule catalog first
+    try:
+        if molecule_df is None:
+            molecule_df = load_molecule_dataset()
+
+        exact_match = molecule_df[
+            molecule_df["Molecule_Name"].astype(str).str.lower()
+            ==
+            molecule_name_clean.lower()
+        ]
+
+        if not exact_match.empty:
+            return (
+                exact_match.iloc[0]["SMILES"],
+                exact_match.iloc[0]["Molecule_Name"],
+                "Local catalog exact match"
+            )
+
+        partial_match = molecule_df[
+            molecule_df["Molecule_Name"].astype(str).str.contains(
+                molecule_name_clean,
+                case=False,
+                na=False,
+                regex=False
+            )
+        ]
+
+        if not partial_match.empty:
+            return (
+                partial_match.iloc[0]["SMILES"],
+                partial_match.iloc[0]["Molecule_Name"],
+                "Local catalog partial match"
+            )
+
+    except Exception:
+        pass
+
+    # 2. PubChem fallback
+    try:
+        pubchem_smiles = name_to_smiles(
+            molecule_name_clean
+        )
+
+        if pubchem_smiles is not None and str(pubchem_smiles).strip() != "":
+            return (
+                pubchem_smiles,
+                molecule_name_clean,
+                "PubChem match"
+            )
+
+    except Exception:
+        pass
+
+    return None, molecule_name_clean, "Not found"
+
+
 def make_safe_filename(name):
     return (
         str(name)
@@ -2806,24 +2872,49 @@ if st.session_state["authentication_status"] is True:
 
             if st.button("Convert Name to SMILES"):
 
-                converted_smiles = name_to_smiles(compound_name)
+                resolved_smiles, resolved_name, match_source = resolve_molecule_name_to_smiles(
+                    compound_name,
+                    load_molecule_dataset()
+                )
 
-                if converted_smiles:
+                if resolved_smiles:
 
-                    st.session_state["converted_smiles"] = converted_smiles
-                    st.session_state["compound_name"] = compound_name
+                    st.session_state["converted_smiles"] = resolved_smiles
+                    st.session_state["compound_name"] = resolved_name
+                    st.session_state["name_search_valid"] = True
 
-                    st.success(f"Molecule Name: {compound_name}")
-                    st.success(f"SMILES Found: {converted_smiles}")
+                    st.success(f"Molecule Name: {resolved_name}")
+                    st.success(f"SMILES Found from {match_source}: {resolved_smiles}")
 
                 else:
-                    st.error("Could not find SMILES for this molecule name.")
 
-            manual_smiles = st.session_state.get("converted_smiles", "CCO")
+                    st.session_state["converted_smiles"] = ""
+                    st.session_state["compound_name"] = compound_name
+                    st.session_state["name_search_valid"] = False
+
+                    st.error(
+                        "Could not find SMILES for this molecule name in the local catalog or PubChem. "
+                        "Please select from dataset or enter valid SMILES manually."
+                    )
+
+            manual_smiles = st.session_state.get("converted_smiles", "")
             selected_name = st.session_state.get("compound_name", compound_name)
 
             st.info(f"Current Molecule Name: {selected_name}")
-            st.info(f"Current SMILES: {manual_smiles}")
+
+            if manual_smiles:
+                st.info(f"Current SMILES: {manual_smiles}")
+            else:
+                st.warning(
+                    "Current SMILES: Not available yet. Please convert a valid molecule name first."
+                )
+
+        if manual_smiles is None or str(manual_smiles).strip() == "":
+            st.error(
+                "No valid SMILES is available for prediction. "
+                "Please convert a valid molecule name, select from dataset, or enter custom SMILES."
+            )
+            st.stop()
 
         model_choice = st.radio(
             "Select Prediction Model",
