@@ -24,3 +24,6 @@ networkx
 tqdm
 seaborn
 shap
+fastapi
+uvicorn
+requests

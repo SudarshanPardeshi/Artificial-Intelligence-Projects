@@ -3,3 +3,7 @@ prediction_logs.db
 __pycache__/prediction_logs.db
 __pycache__/
 *.pyc
+*.db
+streamlit_app_BACKUP_*.py
+streamlit_app_FINAL_ENTERPRISE_PLATFORM*.py
+requirements_full.txt
