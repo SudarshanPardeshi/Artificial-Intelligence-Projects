@@ -336,16 +336,15 @@ Hybrid_GNN_AI_Cheminformatics/
 
 ---
 
-# Clone Repository
+
+## Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+git clone https://github.com/SudarshanPardeshi/Artificial-Intelligence-Projects.git
+cd Artificial-Intelligence-Projects
 ```
 
----
-
-# Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
