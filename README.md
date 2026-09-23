@@ -302,35 +302,46 @@ Includes:
 # 📂 Project Structure
 
 ```text
-Hybrid_GNN_AI_Cheminformatics/
-│
-├── streamlit_app.py
-├── api.py
-├── requirements.txt
-├── Dockerfile
-├── README.md
+Artificial-Intelligence-Projects/
 │
 ├── assets/
-├── saved_models/
-├── outputs/
-├── reports/
-├── figures/
+├── testing results pdf/
 │
-├── users_auth.db
-├── enterprise_ai_storage.db
-├── prediction_logs.db
+├── 03_GNN_Melting_Point(3).ipynb
+├── RDKit_Molecular_Graph_(2).ipynb
 │
-├── all_smiles_with_names.csv
-├── all_smiles_clean.csv
+├── streamlit_app.py
+├── streamlit_app_backup.py
+├── api.py
+├── auth_config.yaml
 │
+├── database_utils.py
 ├── hybrid_inference.py
+├── inference.py
 ├── gnn_utils.py
 ├── rdkit_utils.py
-├── database_utils.py
-└── pubchem_utils.py
+├── pubchem_utils.py
+├── create_smiles_names.py
+│
+├── gat_model.py
+├── gat_model.pth
+├── hybrid_descriptor_gat_rf.pkl
+├── hybrid_feature_names.pkl
+├── hybrid_gat_model.pkl
+├── rdkit_lightgbm_model.pkl
+├── feature_columns.pkl
+│
+├── all_smiles_clean.csv
+├── all_smiles_with_names.csv
+├── test_smiles_with_names.csv
+│
+├── requirements.txt
+├── packages.txt
+├── Dockerfile
+├── .dockerignore
+├── .gitignore
+└── README.md
 ```
-
----
 
 # ⚙️ Installation
 
@@ -428,7 +439,7 @@ making it suitable for:
 - Transformer-based molecular models
 - Attention visualization
 - Molecular docking integration
-- Drug-likeness prediction
+- Advanced learned drug-likeness and property prediction beyond the current rule-based screening
 - Live PubChem API integration
 - Cloud GPU optimization
 - Multi-property prediction
