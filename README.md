@@ -1,4 +1,12 @@
-# 🧪 Hybrid GNN AI Cheminformatics Platform
+# 🧪 Enterprise AI Cheminformatics Platform — Molecular Intelligence & Drug Discovery
+
+
+**Live Application:** https://artificial-intelligence-projects-hbms6ndg5yf8jrfnyojgsn.streamlit.app/
+
+**Development Period:** February 2026 – June 2026
+
+**Project Focus:** Molecular intelligence, graph-based AI, chemical-space analytics, explainable AI, model reliability, and drug-discovery-oriented analysis.
+
 
 An advanced enterprise-grade AI-powered cheminformatics research platform for molecular melting point prediction, molecular similarity analysis, uncertainty estimation, out-of-distribution (OOD) detection, scaffold analysis, explainable AI, scientific benchmarking, and interactive chemical space visualization.
 
